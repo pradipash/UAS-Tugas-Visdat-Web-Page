@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehicle Sales Infographics | Interactive Data Visualization</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-car-side"></i>
+                <span>Vehicle Insights</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#hero" class="nav-link active">Home</a></li>
+                <li><a href="#overview" class="nav-link">Overview</a></li>
+                <li><a href="#cases" class="nav-link">Study Cases</a></li>
+                <li><a href="#insights" class="nav-link">Insights</a></li>
+            </ul>
+            <div class="nav-toggle" id="navToggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <i class="fas fa-chart-line"></i>
+                Interactive Data Visualization
+            </div>
+            <h1 class="hero-title">
+                <span class="gradient-text">Vehicle Sales</span>
+                <br>Infographics Dashboard
+            </h1>
+            <p class="hero-subtitle">
+                Explore comprehensive insights from <span id="totalVehicles">500,000+</span> vehicle sales records.
+                Discover trends, patterns, and data-driven stories through interactive visualizations.
+            </p>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <div class="stat-number" id="statVehicles">0</div>
+                    <div class="stat-label">Vehicles Analyzed</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="statMakes">0</div>
+                    <div class="stat-label">Car Makes</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="statCases">12</div>
+                    <div class="stat-label">Study Cases</div>
+                </div>
+            </div>
+            <a href="#overview" class="hero-cta">
+                <span>Explore Dashboard</span>
+                <i class="fas fa-arrow-down"></i>
+            </a>
+        </div>
+        <div class="hero-visual">
+            <div class="floating-card card-1">
+                <i class="fas fa-dollar-sign"></i>
+                <span>Avg Price</span>
+                <strong id="avgPriceCard">$0</strong>
+            </div>
+            <div class="floating-card card-2">
+                <i class="fas fa-star"></i>
+                <span>Avg Condition</span>
+                <strong id="avgConditionCard">0</strong>
+            </div>
+            <div class="floating-card card-3">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Avg Mileage</span>
+                <strong id="avgMileageCard">0</strong>
+            </div>
+        </div>
+    </section>
+
+    <!-- Overview Section -->
+    <section id="overview" class="section overview">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Dashboard Overview</span>
+                <h2 class="section-title">Key Metrics at a Glance</h2>
+                <p class="section-subtitle">Quick summary of the vehicle sales dataset</p>
+            </div>
+            
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-icon" style="background: linear-gradient(135deg, #667eea, #764ba2);">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <div class="metric-info">
+                        <span class="metric-label">Total Records</span>
+                        <span class="metric-value" id="metricRecords">-</span>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon" style="background: linear-gradient(135deg, #f093fb, #f5576c);">
+                        <i class="fas fa-industry"></i>
+                    </div>
+                    <div class="metric-info">
+                        <span class="metric-label">Car Makes</span>
+                        <span class="metric-value" id="metricMakes">-</span>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">
+                        <i class="fas fa-car"></i>
+                    </div>
+                    <div class="metric-info">
+                        <span class="metric-label">Car Models</span>
+                        <span class="metric-value" id="metricModels">-</span>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon" style="background: linear-gradient(135deg, #43e97b, #38f9d7);">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div class="metric-info">
+                        <span class="metric-label">States</span>
+                        <span class="metric-value" id="metricStates">-</span>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon" style="background: linear-gradient(135deg, #fa709a, #fee140);">
+                        <i class="fas fa-tags"></i>
+                    </div>
+                    <div class="metric-info">
+                        <span class="metric-label">Price Range</span>
+                        <span class="metric-value" id="metricPriceRange">-</span>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon" style="background: linear-gradient(135deg, #a8edea, #fed6e3);">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <div class="metric-info">
+                        <span class="metric-label">Year Range</span>
+                        <span class="metric-value" id="metricYearRange">-</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Study Cases Section -->
+    <section id="cases" class="section cases">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">12 Study Cases</span>
+                <h2 class="section-title">Interactive Data Exploration</h2>
+                <p class="section-subtitle">Click on each case to explore detailed visualizations</p>
+            </div>
+
+            <!-- Case Navigator -->
+            <div class="case-navigator">
+                <button class="case-nav-btn active" data-case="1">
+                    <i class="fas fa-calendar-minus"></i>
+                    <span>Age vs Price</span>
+                </button>
+                <button class="case-nav-btn" data-case="2">
+                    <i class="fas fa-car-side"></i>
+                    <span>Body Types</span>
+                </button>
+                <button class="case-nav-btn" data-case="3">
+                    <i class="fas fa-palette"></i>
+                    <span>Colors</span>
+                </button>
+                <button class="case-nav-btn" data-case="4">
+                    <i class="fas fa-trophy"></i>
+                    <span>Top Makes</span>
+                </button>
+                <button class="case-nav-btn" data-case="5">
+                    <i class="fas fa-star-half-alt"></i>
+                    <span>Condition</span>
+                </button>
+                <button class="case-nav-btn" data-case="6">
+                    <i class="fas fa-cogs"></i>
+                    <span>Transmission</span>
+                </button>
+                <button class="case-nav-btn" data-case="7">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Price Dist.</span>
+                </button>
+                <button class="case-nav-btn" data-case="8">
+                    <i class="fas fa-gem"></i>
+                    <span>Premium Models</span>
+                </button>
+                <button class="case-nav-btn" data-case="9">
+                    <i class="fas fa-map"></i>
+                    <span>States</span>
+                </button>
+                <button class="case-nav-btn" data-case="10">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Mileage</span>
+                </button>
+                <button class="case-nav-btn" data-case="11">
+                    <i class="fas fa-couch"></i>
+                    <span>Interior</span>
+                </button>
+                <button class="case-nav-btn" data-case="12">
+                    <i class="fas fa-award"></i>
+                    <span>Quality</span>
+                </button>
+            </div>
+
+            <!-- Case Content Panels -->
+            <div class="case-panels">
+                <!-- Case 1: Age vs Price -->
+                <div class="case-panel active" id="case-1">
+                    <div class="case-header">
+                        <div class="case-number">01</div>
+                        <div class="case-info">
+                            <h3>Vehicle Age Impact on Selling Price</h3>
+                            <p>Analyzing how vehicle age affects depreciation and market value</p>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="chart-age-price"></canvas>
+                    </div>
+                    <div class="case-insights">
+                        <div class="insight-card">
+                            <i class="fas fa-lightbulb"></i>
+                            <div class="insight-content">
+                                <h4>Key Finding</h4>
+                                <p id="insight-age-price">Newer vehicles command significantly higher prices, with clear depreciation patterns visible across manufacturing years.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Case 2: Body Types -->
+                <div class="case-panel" id="case-2">
+                    <div class="case-header">
+                        <div class="case-number">02</div>
+                        <div class="case-info">
+                            <h3>Body Type Price Comparison</h3>
+                            <p>Comparing average selling prices across different vehicle body types</p>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="chart-body-type"></canvas>
+                    </div>
+                    <div class="case-insights">
+                        <div class="insight-card">
+                            <i class="fas fa-lightbulb"></i>
+                            <div class="insight-content">
+                                <h4>Hypothesis Test</h4>
+                                <p id="insight-body-type">Testing if SUVs have higher average selling prices than Sedans and other body types.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Case 3: Exterior Colors -->
+                <div class="case-panel" id="case-3">
+                    <div class="case-header">
+                        <div class="case-number">03</div>
+                        <div class="case-info">
+                            <h3>Most Popular Exterior Colors</h3>
+                            <p>Distribution of vehicle sales by exterior color preference</p>
+                        </div>
+                    </div>
+                    <div class="chart-container chart-container-pie">
+                        <canvas id="chart-colors"></canvas>
+                    </div>
+                    <div class="case-insights">
+                        <div class="insight-card">
+                            <i class="fas fa-lightbulb"></i>
+                            <div class="insight-content">
+                                <h4>Color Trends</h4>
+                                <p id="insight-colors">Neutral colors dominate the market, with Black, White, and Gray accounting for the majority of sales.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Case 4: Top Makes -->
+                <div class="case-panel" id="case-4">
+                    <div class="case-header">
+                        <div class="case-number">04</div>
+                        <div class="case-info">
+                            <h3>Top Car Manufacturers by Sales Volume</h3>
+                            <p>Ranking manufacturers by total number of vehicles sold</p>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="chart-top-makes"></canvas>
+                    </div>
+                    <div class="case-insights">
+                        <div class="insight-card">
+                            <i class="fas fa-lightbulb"></i>
+                            <div class="insight-content">
+                                <h4>Market Leaders</h4>
+                                <p id="insight-top-makes">American and Japanese manufacturers lead the used car market in sales volume.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Case 5: Condition vs Price -->
+                <div class="case-panel" id="case-5">
+                    <div class="case-header">
+                        <div class="case-number">05</div>
+                        <div class="case-info">
+                            <h3>Vehicle Condition vs Selling Price</h3>
+                            <p>Correlation between vehicle condition rating and market value</p>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="chart-condition"></canvas>
+                    </div>
+                    <div class="case-insights">
+                        <div class="insight-card">
+                            <i class="fas fa-lightbulb"></i>
+                            <div class="insight-content">
+                                <h4>Quality Matters</h4>
+                                <p id="insight-condition">Higher condition ratings strongly correlate with higher selling prices.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Case 6: Transmission -->
+                <div class="case-panel" id="case-6">
+                    <div class="case-header">
+                        <div class="case-number">06</div>
+                        <div class="case-info">
+                            <h3>Transmission Type Analysis</h3>
+                            <p>Comparing sales and pricing between automatic and manual transmissions</p>
+                        </div>
+                    </div>
+                    <div class="chart-container chart-container-pie">
+                        <canvas id="chart-transmission"></canvas>
+                    </div>
+                    <div class="case-insights">
+                        <div class="insight-card">
+                            <i class="fas fa-lightbulb"></i>
+                            <div class="insight-content">
+                                <h4>Market Preference</h4>
+                                <p id="insight-transmission">Automatic transmission dominates the market with significantly higher sales volume.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Case 7: Price Distribution -->
+                <div class="case-panel" id="case-7">
+                    <div class="case-header">
+                        <div class="case-number">07</div>
+                        <div class="case-info">
+                            <h3>Selling Price Distribution</h3>
+                            <p>Understanding the price range distribution across all vehicles</p>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="chart-price-dist"></canvas>
+                    </div>
+                    <div class="case-insights">
+                        <div class="insight-card">
+                            <i class="fas fa-lightbulb"></i>
+                            <div class="insight-content">
+                                <h4>Price Segments</h4>
+                                <p id="insight-price-dist">Most vehicles fall within the mid-price segment, with a right-skewed distribution.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Case 8: Premium Models -->
+                <div class="case-panel" id="case-8">
+                    <div class="case-header">
+                        <div class="case-number">08</div>
+                        <div class="case-info">
+                            <h3>Top Premium Models by Average Price</h3>
+                            <p>Identifying the most expensive vehicle models in the market</p>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="chart-premium-models"></canvas>
+                    </div>
+                    <div class="case-insights">
+                        <div class="insight-card">
+                            <i class="fas fa-lightbulb"></i>
+                            <div class="insight-content">
+                                <h4>Luxury Segment</h4>
+                                <p id="insight-premium-models">Premium and luxury brands command the highest average selling prices.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Case 9: State Sales -->
+                <div class="case-panel" id="case-9">
+                    <div class="case-header">
+                        <div class="case-number">09</div>
+                        <div class="case-info">
+                            <h3>State-wise Sales Analysis</h3>
+                            <p>Geographic distribution of vehicle sales across states</p>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="chart-states"></canvas>
+                    </div>
+                    <div class="case-insights">
+                        <div class="insight-card">
+                            <i class="fas fa-lightbulb"></i>
+                            <div class="insight-content">
+                                <h4>Regional Insights</h4>
+                                <p id="insight-states">Sales volume varies significantly by state, with southern states showing high activity.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Case 10: Odometer -->
+                <div class="case-panel" id="case-10">
+                    <div class="case-header">
+                        <div class="case-number">10</div>
+                        <div class="case-info">
+                            <h3>Mileage Impact on Price</h3>
+                            <p>How odometer reading affects vehicle valuation</p>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="chart-odometer"></canvas>
+                    </div>
+                    <div class="case-insights">
+                        <div class="insight-card">
+                            <i class="fas fa-lightbulb"></i>
+                            <div class="insight-content">
+                                <h4>Mileage Matters</h4>
+                                <p id="insight-odometer">Clear inverse relationship between mileage and price - lower mileage commands premium prices.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Case 11: Interior Colors -->
+                <div class="case-panel" id="case-11">
+                    <div class="case-header">
+                        <div class="case-number">11</div>
+                        <div class="case-info">
+                            <h3>Interior Color Preferences</h3>
+                            <p>Most popular interior color choices among buyers</p>
+                        </div>
+                    </div>
+                    <div class="chart-container chart-container-pie">
+                        <canvas id="chart-interior"></canvas>
+                    </div>
+                    <div class="case-insights">
+                        <div class="insight-card">
+                            <i class="fas fa-lightbulb"></i>
+                            <div class="insight-content">
+                                <h4>Interior Trends</h4>
+                                <p id="insight-interior">Dark interior colors remain the most popular choice for vehicle buyers.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Case 12: Make Condition -->
+                <div class="case-panel" id="case-12">
+                    <div class="case-header">
+                        <div class="case-number">12</div>
+                        <div class="case-info">
+                            <h3>Manufacturer Quality Analysis</h3>
+                            <p>Average condition rating by car manufacturer</p>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="chart-make-condition"></canvas>
+                    </div>
+                    <div class="case-insights">
+                        <div class="insight-card">
+                            <i class="fas fa-lightbulb"></i>
+                            <div class="insight-content">
+                                <h4>Quality Leaders</h4>
+                                <p id="insight-make-condition">Some manufacturers consistently maintain higher average condition ratings.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Insights Section -->
+    <section id="insights" class="section insights-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Key Takeaways</span>
+                <h2 class="section-title">Data-Driven Insights</h2>
+                <p class="section-subtitle">Summary of findings from our comprehensive analysis</p>
+            </div>
+
+            <div class="insights-grid">
+                <div class="insight-box">
+                    <div class="insight-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h4>Depreciation Pattern</h4>
+                    <p>Vehicles depreciate an average of <strong id="depreciation">$1,500</strong> per year, with the steepest decline in the first 5 years.</p>
+                </div>
+                <div class="insight-box">
+                    <div class="insight-icon">
+                        <i class="fas fa-car"></i>
+                    </div>
+                    <h4>SUV Premium</h4>
+                    <p>SUVs command a <strong id="suvPremium">15%</strong> price premium over sedans on average.</p>
+                </div>
+                <div class="insight-box">
+                    <div class="insight-icon">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <h4>Color Preference</h4>
+                    <p>Neutral colors (Black, White, Gray) account for <strong id="neutralPercent">70%</strong> of all sales.</p>
+                </div>
+                <div class="insight-box">
+                    <div class="insight-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h4>Condition Impact</h4>
+                    <p>Each 1-point increase in condition rating adds approximately <strong id="conditionImpact">$2,000</strong> to vehicle value.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <i class="fas fa-car-side"></i>
+                    <span>Vehicle Sales Infographics</span>
+                </div>
+                <div class="footer-info">
+                    <p>Data Visualization Project | UAS Visual Data</p>
+                    <p>Interactive analysis of 500,000+ vehicle sales records</p>
+                </div>
+                <div class="footer-tech">
+                    <span>Built with</span>
+                    <div class="tech-icons">
+                        <i class="fab fa-html5" title="HTML5"></i>
+                        <i class="fab fa-css3-alt" title="CSS3"></i>
+                        <i class="fab fa-js-square" title="JavaScript"></i>
+                        <i class="fab fa-python" title="Python"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Vehicle Insights Dashboard. Data Visualization Project.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
