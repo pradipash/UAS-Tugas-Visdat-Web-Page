@@ -1225,6 +1225,97 @@ body {
     height: 400px;
 }
 
+/* ===== US Map Styles ===== */
+.geo-map {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.us-map-container {
+    width: 100%;
+    max-width: 900px;
+    height: 500px;
+    position: relative;
+}
+
+.full-width-map {
+    justify-content: center;
+}
+
+.full-width-map .geo-map {
+    width: 100%;
+    max-width: 900px;
+}
+
+.us-map-container canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.map-legend {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.map-legend.bubble-legend {
+    flex-direction: column;
+    gap: 10px;
+}
+
+.bubble-sizes {
+    display: flex;
+    align-items: flex-end;
+    gap: 20px;
+}
+
+.bubble-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.75rem;
+    color: var(--gray-400);
+}
+
+.bubble-circle {
+    background: rgba(220, 38, 38, 0.6);
+    border: 2px solid #dc2626;
+    border-radius: 50%;
+}
+
+.bubble-circle.small {
+    width: 12px;
+    height: 12px;
+}
+
+.bubble-circle.medium {
+    width: 24px;
+    height: 24px;
+}
+
+.bubble-circle.large {
+    width: 40px;
+    height: 40px;
+}
+
+.legend-gradient {
+    width: 150px;
+    height: 12px;
+    background: linear-gradient(90deg, #fca5a5, #f87171, #ef4444, #dc2626, #991b1b);
+    border-radius: 6px;
+}
+
+.legend-label {
+    font-size: 0.8rem;
+    color: var(--gray-400);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
 /* ===== Transmission Section ===== */
 .transmission-comparison {
     display: flex;

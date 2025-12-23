@@ -1132,133 +1132,338 @@ function createConditionChart() {
   });
 }
 
-function createGeographyChart() {
+async function createGeographyChart() {
   const ctx = document.getElementById("geoChart");
   if (!ctx || !vehicleData?.state_sales) return;
 
   const statesData = vehicleData.state_sales;
-  const states = statesData.states.slice(0, 10).map((s) => s.toUpperCase());
-  const counts = statesData.counts.slice(0, 10);
-  const total = counts.reduce((a, b) => a + b, 0);
+  const allStates = statesData.states;
+  const allCounts = statesData.counts;
+
+  // Fetch US states GeoJSON
+  const response = await fetch(
+    "https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json"
+  );
+  const us = await response.json();
+  const nation = ChartGeo.topojson.feature(us, us.objects.states).features;
+
+  // State centroids (latitude, longitude) - adjusted for visual alignment
+  const stateCentroids = {
+    AL: { lat: 32.3, lng: -86.7 },
+    AK: { lat: 63.5, lng: -153.0 },
+    AZ: { lat: 33.8, lng: -111.7 },
+    AR: { lat: 34.5, lng: -92.4 },
+    CA: { lat: 36.7, lng: -119.4 },
+    CO: { lat: 38.5, lng: -105.5 },
+    CT: { lat: 41.2, lng: -72.7 },
+    DE: { lat: 38.6, lng: -75.5 },
+    FL: { lat: 28.1, lng: -82.4 },
+    GA: { lat: 32.2, lng: -83.4 },
+    HI: { lat: 20.3, lng: -156.3 },
+    ID: { lat: 43.9, lng: -114.6 },
+    IL: { lat: 39.5, lng: -89.2 },
+    IN: { lat: 39.4, lng: -86.3 },
+    IA: { lat: 41.5, lng: -93.5 },
+    KS: { lat: 38.0, lng: -98.4 },
+    KY: { lat: 37.4, lng: -85.7 },
+    LA: { lat: 30.5, lng: -92.0 },
+    ME: { lat: 44.9, lng: -69.2 },
+    MD: { lat: 38.6, lng: -76.8 },
+    MA: { lat: 41.8, lng: -71.5 },
+    MI: { lat: 43.8, lng: -85.4 },
+    MN: { lat: 45.8, lng: -94.3 },
+    MS: { lat: 32.3, lng: -89.7 },
+    MO: { lat: 37.8, lng: -92.4 },
+    MT: { lat: 46.5, lng: -109.6 },
+    NE: { lat: 41.0, lng: -99.8 },
+    NV: { lat: 38.8, lng: -116.6 },
+    NH: { lat: 43.2, lng: -71.5 },
+    NJ: { lat: 39.8, lng: -74.7 },
+    NM: { lat: 33.9, lng: -106.1 },
+    NY: { lat: 42.5, lng: -75.5 },
+    NC: { lat: 35.1, lng: -79.4 },
+    ND: { lat: 47.0, lng: -100.3 },
+    OH: { lat: 40.0, lng: -82.8 },
+    OK: { lat: 35.2, lng: -97.5 },
+    OR: { lat: 43.5, lng: -120.5 },
+    PA: { lat: 40.5, lng: -77.8 },
+    RI: { lat: 41.3, lng: -71.5 },
+    SC: { lat: 33.5, lng: -80.9 },
+    SD: { lat: 43.9, lng: -100.2 },
+    TN: { lat: 35.4, lng: -86.3 },
+    TX: { lat: 31.0, lng: -99.4 },
+    UT: { lat: 38.8, lng: -111.7 },
+    VT: { lat: 43.6, lng: -72.7 },
+    VA: { lat: 37.1, lng: -78.8 },
+    WA: { lat: 47.0, lng: -120.5 },
+    WV: { lat: 38.5, lng: -80.5 },
+    WI: { lat: 44.2, lng: -89.7 },
+    WY: { lat: 42.5, lng: -107.5 },
+    DC: { lat: 38.5, lng: -77.0 }
+  };
+
+  // State code to full name mapping
+  const stateNames = {
+    AL: "Alabama",
+    AK: "Alaska",
+    AZ: "Arizona",
+    AR: "Arkansas",
+    CA: "California",
+    CO: "Colorado",
+    CT: "Connecticut",
+    DE: "Delaware",
+    FL: "Florida",
+    GA: "Georgia",
+    HI: "Hawaii",
+    ID: "Idaho",
+    IL: "Illinois",
+    IN: "Indiana",
+    IA: "Iowa",
+    KS: "Kansas",
+    KY: "Kentucky",
+    LA: "Louisiana",
+    ME: "Maine",
+    MD: "Maryland",
+    MA: "Massachusetts",
+    MI: "Michigan",
+    MN: "Minnesota",
+    MS: "Mississippi",
+    MO: "Missouri",
+    MT: "Montana",
+    NE: "Nebraska",
+    NV: "Nevada",
+    NH: "New Hampshire",
+    NJ: "New Jersey",
+    NM: "New Mexico",
+    NY: "New York",
+    NC: "North Carolina",
+    ND: "North Dakota",
+    OH: "Ohio",
+    OK: "Oklahoma",
+    OR: "Oregon",
+    PA: "Pennsylvania",
+    RI: "Rhode Island",
+    SC: "South Carolina",
+    SD: "South Dakota",
+    TN: "Tennessee",
+    TX: "Texas",
+    UT: "Utah",
+    VT: "Vermont",
+    VA: "Virginia",
+    WA: "Washington",
+    WV: "West Virginia",
+    WI: "Wisconsin",
+    WY: "Wyoming",
+    DC: "District of Columbia"
+  };
+
+  // Create state-to-count map
+  const stateMap = {};
+  allStates.forEach((state, i) => {
+    stateMap[state.toUpperCase()] = allCounts[i];
+  });
+
+  const maxCount = Math.max(...allCounts);
+  const minRadius = 15;
+  const maxRadius = 55;
+
+  // Bubble data with lat/lng coordinates
+  const bubbleData = Object.keys(stateCentroids)
+    .map((stateCode) => {
+      const coords = stateCentroids[stateCode];
+      const count = stateMap[stateCode] || 0;
+      const ratio = count / maxCount;
+      const r = minRadius + ratio * (maxRadius - minRadius);
+      return {
+        latitude: coords.lat,
+        longitude: coords.lng,
+        value: count,
+        r: r,
+        state: stateCode,
+        fullName: stateNames[stateCode] || stateCode
+      };
+    })
+    .filter((d) => d.value > 0); // Only show states with data
 
   charts["8"] = new Chart(ctx, {
-    type: "bar",
+    type: "bubbleMap",
     data: {
-      labels: states,
+      labels: bubbleData.map((d) => d.state),
       datasets: [
         {
-          label: "Sales",
-          data: counts,
-          backgroundColor: "#dc2626",
-          borderRadius: 6,
-          hoverBackgroundColor: "#f97316"
+          label: "Vehicle Sales",
+          outline: nation,
+          showOutline: true,
+          outlineBackgroundColor: "#1a1a1a",
+          outlineBorderColor: "rgba(255, 255, 255, 0.3)",
+          outlineBorderWidth: 0.5,
+          data: bubbleData,
+          backgroundColor: (context) => {
+            if (context.dataIndex == null) return "rgba(220, 38, 38, 0.3)";
+            const value = context.dataset.data[context.dataIndex]?.value || 0;
+            const ratio = value / maxCount;
+            const opacity = 0.3 + ratio * 0.6; // 0.3 to 0.9 opacity
+            return `rgba(220, 38, 38, ${opacity})`;
+          },
+          borderColor: (context) => {
+            if (context.dataIndex == null) return "rgba(220, 38, 38, 0.5)";
+            const value = context.dataset.data[context.dataIndex]?.value || 0;
+            const ratio = value / maxCount;
+            const opacity = 0.5 + ratio * 0.5; // 0.5 to 1.0 opacity
+            return `rgba(220, 38, 38, ${opacity})`;
+          },
+          borderWidth: 1,
+          hoverBackgroundColor: "rgba(249, 115, 22, 0.9)",
+          hoverBorderColor: "#fff",
+          hoverBorderWidth: 2
         }
       ]
     },
     options: {
       responsive: true,
-      maintainAspectRatio: false,
-      layout: {
-        padding: { top: 20 }
-      },
+      maintainAspectRatio: true,
       onClick: (event, elements) => {
         if (elements.length > 0) {
-          const idx = elements[0].index;
-          const state = states[idx];
-          const count = counts[idx];
-          const percent = (
-            (count / vehicleData.summary.total_vehicles) *
-            100
-          ).toFixed(1);
+          const index = elements[0].index;
+          const clickedData = bubbleData[index];
+          const state = clickedData.state;
+          const count = clickedData.value;
 
-          openChartModal(
-            `${state} State Analysis`,
-            [
-              { label: "Total Sales", value: formatNumber(count) },
-              { label: "National Share", value: percent + "%" },
-              { label: "Rank", value: "#" + (idx + 1) + " of 51" },
+          if (count > 0) {
+            const stateIndex = allStates.findIndex(
+              (s) => s.toUpperCase() === state
+            );
+            const rank = stateIndex >= 0 ? stateIndex + 1 : "?";
+            const percent = (
+              (count / vehicleData.summary.total_vehicles) *
+              100
+            ).toFixed(1);
+
+            openChartModal(
+              `${state} State Analysis`,
+              [
+                { label: "Total Sales", value: formatNumber(count) },
+                { label: "National Share", value: percent + "%" },
+                { label: "Rank", value: "#" + rank + " of 51" },
+                {
+                  label: "vs #1 State",
+                  value: ((count / allCounts[0]) * 100).toFixed(0) + "%"
+                }
+              ],
               {
-                label: "vs #1 State",
-                value: ((count / counts[0]) * 100).toFixed(0) + "%"
-              }
-            ],
-            {
-              type: "bar",
-              data: {
-                labels: states.slice(0, 5),
-                datasets: [
-                  {
-                    label: "Sales",
-                    data: counts.slice(0, 5),
-                    backgroundColor: counts
-                      .slice(0, 5)
-                      .map((c, i) =>
-                        states[i] === state
-                          ? "#dc2626"
-                          : `rgba(220, 38, 38, ${0.4 + i * 0.1})`
-                      ),
-                    borderRadius: 6,
-                    datalabels: { display: false }
-                  }
-                ]
-              },
-              options: {
-                indexAxis: "y",
-                responsive: true,
-                maintainAspectRatio: true,
-                layout: {
-                  padding: { left: 10, right: 10 }
+                type: "bar",
+                data: {
+                  labels: allStates.slice(0, 5).map((s) => s.toUpperCase()),
+                  datasets: [
+                    {
+                      label: "Sales",
+                      data: allCounts.slice(0, 5),
+                      backgroundColor: allStates
+                        .slice(0, 5)
+                        .map((s) =>
+                          s.toUpperCase() === state
+                            ? "#dc2626"
+                            : "rgba(220, 38, 38, 0.5)"
+                        ),
+                      borderRadius: 6,
+                      datalabels: { display: false }
+                    }
+                  ]
                 },
-                plugins: {
-                  legend: { display: false },
-                  datalabels: false
-                },
-                scales: {
-                  x: {
-                    ticks: {
-                      color: "#94a3b8",
-                      callback: (v) => formatNumber(v)
-                    },
-                    grid: { color: "rgba(255, 255, 255, 0.05)" }
+                options: {
+                  indexAxis: "y",
+                  responsive: true,
+                  maintainAspectRatio: true,
+                  layout: { padding: { left: 10, right: 10 } },
+                  plugins: {
+                    legend: { display: false },
+                    datalabels: false
                   },
-                  y: {
-                    ticks: { color: "#94a3b8" },
-                    grid: { display: false }
+                  scales: {
+                    x: {
+                      ticks: {
+                        color: "#94a3b8",
+                        callback: (v) => formatNumber(v)
+                      },
+                      grid: { color: "rgba(255, 255, 255, 0.05)" }
+                    },
+                    y: {
+                      ticks: { color: "#94a3b8" },
+                      grid: { display: false }
+                    }
                   }
                 }
-              }
-            },
-            `${state} accounts for ${percent}% of total US vehicle sales`
-          );
+              },
+              `${state} accounts for ${percent}% of total US vehicle sales`
+            );
+          }
         }
       },
+      interaction: {
+        mode: "point",
+        intersect: true
+      },
       plugins: {
-        legend: { display: false },
+        legend: {
+          display: false
+        },
         datalabels: {
-          anchor: "end",
-          align: "top",
+          display: true,
+          formatter: (value, context) => {
+            return context.dataset.data[context.dataIndex]?.state || "";
+          },
           color: "#fff",
-          font: { weight: "bold", size: 9 },
-          formatter: (value) => formatNumber(value)
+          font: (context) => {
+            const r = context.dataset.data[context.dataIndex]?.r || 8;
+            const size = Math.max(8, Math.round(r * 0.45));
+            return {
+              weight: "bold",
+              size: size
+            };
+          },
+          textStrokeColor: "rgba(0, 0, 0, 0.9)",
+          textStrokeWidth: 2
         },
         tooltip: {
+          enabled: true,
+          mode: "point",
+          intersect: true,
+          backgroundColor: "rgba(24, 24, 27, 0.95)",
+          titleColor: "#fff",
+          bodyColor: "#94a3b8",
+          borderColor: "#dc2626",
+          borderWidth: 1,
+          padding: 10,
+          cornerRadius: 6,
+          displayColors: false,
           callbacks: {
-            label: (context) => `${context.parsed.y.toLocaleString()} sales`
+            title: (context) => {
+              if (!context || !context[0]) return "";
+              const d = context[0].dataset.data[context[0].dataIndex];
+              return d?.fullName || d?.state || "";
+            },
+            label: (context) => {
+              const d = context.dataset.data[context.dataIndex];
+              if (!d) return "";
+              const percent = (
+                (d.value / vehicleData.summary.total_vehicles) *
+                100
+              ).toFixed(1);
+              return `${formatNumber(d.value)} sales (${percent}%)`;
+            }
           }
         }
       },
       scales: {
-        y: {
-          grid: { color: "rgba(255, 255, 255, 0.05)" },
-          ticks: { callback: (value) => formatNumber(value) }
+        projection: {
+          axis: "x",
+          projection: "albersUsa"
         },
-        x: {
-          grid: { display: false }
+        size: {
+          axis: "x",
+          size: [20, 65],
+          mode: "area"
         }
-      },
-      animation: {
-        duration: 2000,
-        delay: (context) => context.dataIndex * 100
       }
     }
   });
