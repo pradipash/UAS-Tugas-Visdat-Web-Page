@@ -1038,7 +1038,7 @@ function createConditionChart() {
           const price = avgPrices[idx];
           const minPrice = Math.min(...avgPrices);
           const maxPrice = Math.max(...avgPrices);
-          const premium = (((price - minPrice) / minPrice) * 100).toFixed(0);
+          const multiplier = (price / minPrice).toFixed(1);
 
           openChartModal(
             `Condition ${condition.toFixed(1)} - ${
@@ -1047,7 +1047,7 @@ function createConditionChart() {
             [
               { label: "Rating", value: condition.toFixed(1) + "/5.0" },
               { label: "Avg Price", value: formatCurrency(price) },
-              { label: "vs Lowest", value: "+" + premium + "%" },
+              { label: "vs Lowest", value: multiplier + "x" },
               { label: "Quality", value: conditionLabels[idx] || "N/A" }
             ],
             {
