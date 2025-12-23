@@ -1,31 +1,31 @@
 /* ===== CSS Variables ===== */
 :root {
-    --primary: #6366f1;
-    --primary-dark: #4f46e5;
-    --secondary: #8b5cf6;
-    --accent: #ec4899;
-    --success: #10b981;
-    --warning: #f59e0b;
-    --dark: #0f172a;
-    --dark-light: #1e293b;
-    --gray-50: #f8fafc;
-    --gray-100: #f1f5f9;
-    --gray-200: #e2e8f0;
-    --gray-300: #cbd5e1;
-    --gray-400: #94a3b8;
-    --gray-500: #64748b;
-    --gray-600: #475569;
-    --gray-700: #334155;
-    --gray-800: #1e293b;
-    --gray-900: #0f172a;
+    --primary: #dc2626;
+    --primary-dark: #b91c1c;
+    --secondary: #ef4444;
+    --accent: #f97316;
+    --success: #22c55e;
+    --warning: #eab308;
+    --dark: #18181b;
+    --dark-light: #27272a;
+    --gray-50: #fafafa;
+    --gray-100: #f4f4f5;
+    --gray-200: #e4e4e7;
+    --gray-300: #d4d4d8;
+    --gray-400: #a1a1aa;
+    --gray-500: #71717a;
+    --gray-600: #52525b;
+    --gray-700: #3f3f46;
+    --gray-800: #27272a;
+    --gray-900: #18181b;
     --white: #ffffff;
-    --gradient-primary: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
-    --gradient-dark: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    --gradient-primary: linear-gradient(135deg, #dc2626 0%, #ef4444 50%, #f97316 100%);
+    --gradient-dark: linear-gradient(135deg, #27272a 0%, #18181b 100%);
     --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
     --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-    --shadow-glow: 0 0 40px rgba(99, 102, 241, 0.3);
+    --shadow-glow: 0 0 40px rgba(220, 38, 38, 0.3);
 }
 
 /* ===== Reset & Base ===== */
@@ -41,7 +41,7 @@ html {
 }
 
 body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
     background: var(--dark);
     color: var(--white);
     line-height: 1.6;
@@ -229,7 +229,7 @@ body {
 }
 
 .hero-title {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: clamp(3rem, 8vw, 6rem);
     font-weight: 700;
     line-height: 1.1;
@@ -332,7 +332,7 @@ body {
 }
 
 .float-stat .counter {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 2rem;
     font-weight: 700;
     display: block;
@@ -347,17 +347,21 @@ body {
 
 /* ===== Chapter Number ===== */
 .chapter-number {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 5rem;
     font-weight: 800;
     background: var(--gradient-primary);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    opacity: 0.3;
+    opacity: 0.7;
     line-height: 1;
     margin-bottom: 16px;
     display: block;
+}
+
+.text-center .chapter-number {
+    text-align: center;
 }
 
 /* ===== Data Intro Section ===== */
@@ -381,7 +385,7 @@ body {
 }
 
 .section-title {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 3rem;
     font-weight: 700;
     margin-bottom: 20px;
@@ -428,7 +432,7 @@ body {
 }
 
 .card-value {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 1.75rem;
     font-weight: 700;
     margin-bottom: 4px;
@@ -486,7 +490,7 @@ body {
 }
 
 .story-text h2 {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 2.5rem;
     font-weight: 700;
     margin-bottom: 20px;
@@ -526,7 +530,7 @@ body {
 }
 
 .stat-value {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 2rem;
     font-weight: 700;
     color: var(--success);
@@ -617,13 +621,13 @@ body {
 }
 
 .compare-value {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 1.75rem;
     font-weight: 700;
 }
 
 .vs-badge {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 1.25rem;
     font-weight: 700;
     color: var(--gray-500);
@@ -647,7 +651,7 @@ body {
 }
 
 .verdict-value {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 2.5rem;
     font-weight: 800;
 }
@@ -660,6 +664,10 @@ body {
 .full-width-content {
     width: 100%;
     max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .text-center {
@@ -668,7 +676,7 @@ body {
 }
 
 .text-center h2 {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 3rem;
     font-weight: 700;
     margin-bottom: 12px;
@@ -836,7 +844,7 @@ body {
 }
 
 .podium-block {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 2rem;
     font-weight: 800;
     color: var(--dark);
@@ -894,7 +902,7 @@ body {
 }
 
 .scale-rating {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 2rem;
     font-weight: 800;
     display: block;
@@ -919,7 +927,7 @@ body {
 }
 
 .big-number {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 4rem;
     font-weight: 800;
     line-height: 1;
@@ -934,26 +942,29 @@ body {
 /* ===== Mileage Section ===== */
 .mileage-section {
     flex-direction: column;
+    align-items: center;
 }
 
 .mileage-journey {
     width: 100%;
     max-width: 1000px;
-    margin-bottom: 50px;
+    margin: 0 auto 50px;
 }
 
 .journey-track {
     position: relative;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    gap: 40px;
     padding: 80px 40px 60px;
 }
 
 .journey-line {
     position: absolute;
     top: 62px;
-    left: 100px;
-    right: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 70%;
     height: 6px;
     background: linear-gradient(90deg, var(--success), var(--warning), var(--accent));
     border-radius: 3px;
@@ -1002,7 +1013,7 @@ body {
 }
 
 .point-info .price {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-weight: 700;
     font-size: 1.1rem;
     color: var(--success);
@@ -1042,7 +1053,7 @@ body {
 }
 
 .mileage-stat .stat-value {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 2rem;
     font-weight: 700;
     display: block;
@@ -1099,7 +1110,7 @@ body {
 }
 
 .ranking-number {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-weight: 700;
     font-size: 1.1rem;
     color: var(--primary);
@@ -1170,7 +1181,7 @@ body {
 }
 
 .trans-percent {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 3rem;
     font-weight: 800;
     background: var(--gradient-primary);
@@ -1193,11 +1204,13 @@ body {
 /* ===== Premium Section ===== */
 .premium-section {
     flex-direction: column;
+    align-items: center;
 }
 
 .premium-showcase {
     width: 100%;
     max-width: 1000px;
+    margin: 0 auto;
 }
 
 .premium-list {
@@ -1224,7 +1237,7 @@ body {
 }
 
 .premium-rank {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 1.5rem;
     font-weight: 800;
     width: 50px;
@@ -1247,7 +1260,7 @@ body {
 }
 
 .premium-price {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 1.5rem;
     font-weight: 700;
     color: var(--success);
@@ -1265,7 +1278,7 @@ body {
 }
 
 .conclusion-title {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 3.5rem;
     font-weight: 700;
     margin-bottom: 50px;
@@ -1343,7 +1356,7 @@ body {
 }
 
 .final-value {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 3rem;
     font-weight: 800;
     background: var(--gradient-primary);

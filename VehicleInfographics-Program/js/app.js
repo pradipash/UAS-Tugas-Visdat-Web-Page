@@ -327,7 +327,7 @@ function populateColorBars() {
     .slice(0, 8)
     .map((color, i) => {
       const width = ((colorCounts[i] / maxCount) * 100).toFixed(1);
-      const bgColor = colorMap[color.toLowerCase()] || "#6366f1";
+      const bgColor = colorMap[color.toLowerCase()] || "#dc2626";
       const percent = colorPercents[i].toFixed(1);
 
       return `
@@ -348,7 +348,7 @@ function populateColorBars() {
     topColorsContainer.innerHTML = colorNames
       .slice(0, 3)
       .map((color, i) => {
-        const bgColor = colorMap[color.toLowerCase()] || "#6366f1";
+        const bgColor = colorMap[color.toLowerCase()] || "#dc2626";
         const percent = colorPercents[i].toFixed(1);
         return `
                 <div class="top-color">
@@ -369,30 +369,19 @@ function populateBrandPodium() {
   const makes = makesData.makes;
   const counts = makesData.counts;
 
-  const brandEmojis = {
-    ford: "🚙",
-    chevrolet: "🚗",
-    toyota: "🚘",
-    honda: "🏎️",
-    nissan: "🚐",
-    jeep: "🚕",
-    gmc: "🛻",
-    ram: "🚚",
-    bmw: "🏎️",
-    "mercedes-benz": "🚘",
-    audi: "🚗",
-    lexus: "🚙",
-    dodge: "🚗",
-    hyundai: "🚙",
-    kia: "🚗"
+  // Font Awesome icons for podium positions
+  const podiumIcons = {
+    first: '<i class="fas fa-trophy"></i>',
+    second: '<i class="fas fa-medal"></i>',
+    third: '<i class="fas fa-award"></i>'
   };
 
   const classNames = ["first", "second", "third"];
   for (let i = 0; i < 3; i++) {
     const element = document.querySelector(`.podium-item.${classNames[i]}`);
     if (element && makes[i]) {
-      const emoji = brandEmojis[makes[i].toLowerCase()] || "🚗";
-      element.querySelector(".brand-logo").textContent = emoji;
+      element.querySelector(".brand-logo").innerHTML =
+        podiumIcons[classNames[i]];
       element.querySelector(".brand-name").textContent = makes[i];
       element.querySelector(".brand-count").textContent =
         formatNumber(counts[i]) + " vehicles";
@@ -537,11 +526,11 @@ function createAgePriceChart() {
         {
           label: "Average Price",
           data: prices,
-          borderColor: "#6366f1",
-          backgroundColor: "rgba(99, 102, 241, 0.1)",
+          borderColor: "#dc2626",
+          backgroundColor: "rgba(220, 38, 38, 0.1)",
           fill: true,
           tension: 0.4,
-          pointBackgroundColor: "#6366f1",
+          pointBackgroundColor: "#dc2626",
           pointBorderColor: "#ffffff",
           pointBorderWidth: 2,
           pointRadius: 5,
@@ -586,9 +575,9 @@ function createBodyTypeChart() {
   const types = bodyData.types;
   const counts = bodyData.counts;
   const colors = [
-    "#6366f1",
-    "#8b5cf6",
-    "#ec4899",
+    "#dc2626",
+    "#ef4444",
+    "#f97316",
     "#10b981",
     "#f59e0b",
     "#3b82f6",
@@ -664,8 +653,8 @@ function createBrandsChart() {
               0,
               300
             );
-            gradient.addColorStop(0, "#6366f1");
-            gradient.addColorStop(1, "#8b5cf6");
+            gradient.addColorStop(0, "#dc2626");
+            gradient.addColorStop(1, "#ef4444");
             return gradient;
           },
           borderRadius: 8
@@ -779,7 +768,7 @@ function createGeographyChart() {
         {
           label: "Sales",
           data: counts,
-          backgroundColor: "#6366f1",
+          backgroundColor: "#dc2626",
           borderRadius: 6
         }
       ]
@@ -827,7 +816,7 @@ function createTransmissionChart() {
       datasets: [
         {
           data: counts,
-          backgroundColor: ["#6366f1", "#ec4899", "#10b981", "#f59e0b"],
+          backgroundColor: ["#dc2626", "#f97316", "#10b981", "#f59e0b"],
           borderWidth: 0
         }
       ]
