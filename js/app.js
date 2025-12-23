@@ -1051,23 +1051,23 @@ function createConditionChart() {
               { label: "Quality", value: conditionLabels[idx] || "N/A" }
             ],
             {
-              type: "line",
+              type: "bar",
               data: {
-                labels: conditions.map((c) => c.toFixed(1)),
+                labels: conditionLabels,
                 datasets: [
                   {
+                    label: "Average Price",
                     data: avgPrices,
-                    borderColor: "#10b981",
-                    backgroundColor: "rgba(16, 185, 129, 0.1)",
-                    fill: true,
-                    pointBackgroundColor: conditions.map((c, i) =>
-                      i === idx ? "#dc2626" : "#10b981"
+                    backgroundColor: avgPrices.map((p, i) =>
+                      i === idx ? "#dc2626" : "rgba(16, 185, 129, 0.6)"
                     ),
-                    pointRadius: conditions.map((c, i) => (i === idx ? 10 : 5))
+                    borderRadius: 6
                   }
                 ]
               },
               options: {
+                responsive: true,
+                maintainAspectRatio: true,
                 plugins: {
                   legend: { display: false },
                   datalabels: { display: false }
@@ -1075,8 +1075,14 @@ function createConditionChart() {
                 scales: {
                   y: {
                     ticks: {
+                      color: "#94a3b8",
                       callback: (v) => "$" + (v / 1000).toFixed(0) + "K"
-                    }
+                    },
+                    grid: { color: "rgba(255, 255, 255, 0.05)" }
+                  },
+                  x: {
+                    ticks: { color: "#94a3b8" },
+                    grid: { display: false }
                   }
                 }
               }
@@ -1152,6 +1158,9 @@ function createGeographyChart() {
     options: {
       responsive: true,
       maintainAspectRatio: false,
+      layout: {
+        padding: { top: 20 }
+      },
       onClick: (event, elements) => {
         if (elements.length > 0) {
           const idx = elements[0].index;
@@ -1174,26 +1183,48 @@ function createGeographyChart() {
               }
             ],
             {
-              type: "polarArea",
+              type: "bar",
               data: {
                 labels: states.slice(0, 5),
                 datasets: [
                   {
+                    label: "Sales",
                     data: counts.slice(0, 5),
-                    backgroundColor: states
+                    backgroundColor: counts
                       .slice(0, 5)
-                      .map((s, i) =>
-                        i === idx
+                      .map((c, i) =>
+                        states[i] === state
                           ? "#dc2626"
-                          : `rgba(220, 38, 38, ${0.3 + i * 0.1})`
-                      )
+                          : `rgba(220, 38, 38, ${0.4 + i * 0.1})`
+                      ),
+                    borderRadius: 6,
+                    datalabels: { display: false }
                   }
                 ]
               },
               options: {
+                indexAxis: "y",
+                responsive: true,
+                maintainAspectRatio: true,
+                layout: {
+                  padding: { left: 10, right: 10 }
+                },
                 plugins: {
-                  legend: { position: "right" },
-                  datalabels: { display: false }
+                  legend: { display: false },
+                  datalabels: false
+                },
+                scales: {
+                  x: {
+                    ticks: {
+                      color: "#94a3b8",
+                      callback: (v) => formatNumber(v)
+                    },
+                    grid: { color: "rgba(255, 255, 255, 0.05)" }
+                  },
+                  y: {
+                    ticks: { color: "#94a3b8" },
+                    grid: { display: false }
+                  }
                 }
               }
             },
@@ -1420,16 +1451,26 @@ function createBrandQualityChart() {
                     ],
                     backgroundColor: "rgba(220, 38, 38, 0.2)",
                     borderColor: "#dc2626",
-                    pointBackgroundColor: "#dc2626"
+                    pointBackgroundColor: "#dc2626",
+                    pointBorderColor: "#dc2626",
+                    datalabels: { display: false }
                   }
                 ]
               },
               options: {
                 plugins: {
                   legend: { display: false },
-                  datalabels: { display: false }
+                  datalabels: false
                 },
-                scales: { r: { beginAtZero: true, max: 100 } }
+                scales: {
+                  r: {
+                    beginAtZero: true,
+                    max: 100,
+                    ticks: { color: "#94a3b8", backdropColor: "transparent" },
+                    grid: { color: "rgba(255, 255, 255, 0.1)" },
+                    pointLabels: { color: "#94a3b8" }
+                  }
+                }
               }
             },
             `${brand} has an average condition score of ${condition.toFixed(1)}`
