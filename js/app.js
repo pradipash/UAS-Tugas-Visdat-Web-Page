@@ -225,6 +225,13 @@ function updateStaticContent() {
     }
   }
 
+  // Brand Quality section
+  if (vehicleData.make_condition) {
+    const makeData = vehicleData.make_condition;
+    updateElement("#topQualityBrand", makeData.makes[0]);
+    updateElement("#topQualityScore", makeData.avg_conditions[0].toFixed(1));
+  }
+
   // Premium models section
   if (vehicleData.top_models_price) {
     populatePremiumList();
@@ -233,7 +240,7 @@ function updateStaticContent() {
   // Conclusion section
   updateElement("#finalRecords", formatNumber(summary.total_vehicles));
   updateElement("#finalMakes", summary.total_makes);
-  updateElement("#finalStudyCases", "12");
+  updateElement("#finalStudyCases", "10");
 }
 
 // ===== Helper Functions =====
@@ -270,34 +277,75 @@ function initScrollProgress() {
   });
 }
 
-// ===== Navigation Dots =====
+// ===== Navigation Sidebar =====
 function initNavigation() {
   const sections = document.querySelectorAll(".story-section");
-  const navDots = document.querySelectorAll(".nav-dot");
+  const navItems = document.querySelectorAll(".nav-item");
+  const navToggle = document.getElementById("navToggle");
+  const storyNav = document.getElementById("storyNav");
+
+  // Mobile toggle
+  if (navToggle) {
+    navToggle.addEventListener("click", () => {
+      storyNav.classList.toggle("open");
+    });
+  }
 
   // Click to navigate
-  navDots.forEach((dot, index) => {
-    dot.addEventListener("click", () => {
-      sections[index].scrollIntoView({ behavior: "smooth" });
+  navItems.forEach((item) => {
+    item.addEventListener("click", () => {
+      const sectionIndex = parseInt(item.getAttribute("data-section"));
+      if (sections[sectionIndex]) {
+        sections[sectionIndex].scrollIntoView({ behavior: "smooth" });
+      }
+      // Close mobile nav
+      storyNav.classList.remove("open");
     });
   });
 
-  // Update active dot on scroll
+  // Update active item on scroll
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          const index = Array.from(sections).indexOf(entry.target);
-          navDots.forEach((dot, i) => {
-            dot.classList.toggle("active", i === index);
+          const sectionId = entry.target.getAttribute("data-section");
+          navItems.forEach((item) => {
+            const itemSection = item.getAttribute("data-section");
+            item.classList.toggle("active", itemSection === sectionId);
           });
         }
       });
     },
-    { threshold: 0.5 }
+    { threshold: 0.3, rootMargin: "0px 0px -20% 0px" }
   );
 
   sections.forEach((section) => observer.observe(section));
+
+  // Additional scroll listener to handle last section
+  let ticking = false;
+  window.addEventListener("scroll", () => {
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        const scrollHeight = document.documentElement.scrollHeight;
+        const scrollTop = window.scrollY;
+        const clientHeight = window.innerHeight;
+
+        // If scrolled to bottom, activate last section
+        if (scrollTop + clientHeight >= scrollHeight - 50) {
+          const lastSection = sections[sections.length - 1];
+          const lastSectionId = lastSection?.getAttribute("data-section");
+          if (lastSectionId) {
+            navItems.forEach((item) => {
+              const itemSection = item.getAttribute("data-section");
+              item.classList.toggle("active", itemSection === lastSectionId);
+            });
+          }
+        }
+        ticking = false;
+      });
+      ticking = true;
+    }
+  });
 }
 
 // ===== Scroll Animations =====
@@ -405,13 +453,24 @@ function populateColorBars() {
             <div class="color-bar">
                 <span class="color-bar-label">${color}</span>
                 <div class="color-bar-track">
-                    <div class="color-bar-fill" style="--width: ${width}%; background: ${bgColor};"></div>
+                    <div class="color-bar-fill color-bar-${i}" style="background: ${bgColor};"></div>
                 </div>
                 <span class="color-bar-value">${percent}%</span>
             </div>
         `;
     })
     .join("");
+
+  // Animate color bars after a delay
+  setTimeout(() => {
+    colorNames.slice(0, 8).forEach((color, i) => {
+      const width = ((colorCounts[i] / maxCount) * 100).toFixed(1);
+      const bar = container.querySelector(`.color-bar-${i}`);
+      if (bar) {
+        bar.style.width = width + "%";
+      }
+    });
+  }, 100);
 
   // Update top colors list
   const topColorsContainer = document.querySelector(".top-colors");
@@ -421,9 +480,10 @@ function populateColorBars() {
       .map((color, i) => {
         const bgColor = colorMap[color.toLowerCase()] || "#dc2626";
         const percent = colorPercents[i].toFixed(1);
+        const colorClass = `top-color-${color.toLowerCase()}`;
         return `
-                <div class="top-color">
-                    <div class="color-swatch" style="--color: ${bgColor};"></div>
+                <div class="top-color ${colorClass}">
+                    <div class="color-swatch"></div>
                     <span class="color-name">${color}</span>
                     <span class="color-percent">${percent}%</span>
                 </div>
@@ -528,7 +588,7 @@ function populatePremiumList() {
     .slice(0, 5)
     .map(
       (model, index) => `
-        <div class="premium-item fade-in-up" style="--delay: ${index * 0.1}s;">
+        <div class="premium-item premium-item-${index + 1} fade-in-up">
             <span class="premium-rank">#${index + 1}</span>
             <div class="premium-info">
                 <div class="premium-model">${model}</div>
@@ -577,6 +637,9 @@ function animateChartForSection(sectionId) {
       break;
     case "9":
       createTransmissionChart();
+      break;
+    case "10":
+      createBrandQualityChart();
       break;
   }
 }
@@ -1270,6 +1333,142 @@ function createTransmissionChart() {
       animation: {
         animateRotate: true,
         duration: 2000
+      }
+    }
+  });
+}
+
+function createBrandQualityChart() {
+  const ctx = document.getElementById("brandQualityChart");
+  if (!ctx || !vehicleData?.make_condition) return;
+
+  const makeData = vehicleData.make_condition;
+  const makes = makeData.makes.slice(0, 12); // Top 12 brands
+  const conditions = makeData.avg_conditions.slice(0, 12);
+  const prices = makeData.avg_prices.slice(0, 12);
+
+  // Update the top quality brand display
+  updateElement("#topQualityBrand", makes[0]);
+  updateElement("#topQualityScore", conditions[0].toFixed(1));
+
+  // Create gradient colors based on condition
+  const maxCondition = Math.max(...conditions);
+  const minCondition = Math.min(...conditions);
+
+  charts["10"] = new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: makes,
+      datasets: [
+        {
+          label: "Average Condition",
+          data: conditions,
+          backgroundColor: conditions.map((c) => {
+            const normalized =
+              (c - minCondition) / (maxCondition - minCondition);
+            const r = Math.round(220 - normalized * 100);
+            const g = Math.round(38 + normalized * 100);
+            const b = Math.round(38);
+            return `rgba(${r}, ${g}, ${b}, 0.8)`;
+          }),
+          borderRadius: 6,
+          hoverBackgroundColor: "#dc2626"
+        }
+      ]
+    },
+    options: {
+      indexAxis: "y",
+      responsive: true,
+      maintainAspectRatio: false,
+      onClick: (event, elements) => {
+        if (elements.length > 0) {
+          const idx = elements[0].index;
+          const brand = makes[idx];
+          const condition = conditions[idx];
+          const price = prices[idx];
+
+          openChartModal(
+            `${brand} Quality Analysis`,
+            [
+              { label: "Avg Condition", value: condition.toFixed(2) },
+              { label: "Avg Price", value: formatCurrency(price) },
+              {
+                label: "Quality Rank",
+                value: "#" + (idx + 1) + " of " + makes.length
+              },
+              {
+                label: "Category",
+                value:
+                  condition > 32
+                    ? "Premium"
+                    : condition > 28
+                    ? "Good"
+                    : "Standard"
+              }
+            ],
+            {
+              type: "radar",
+              data: {
+                labels: ["Condition", "Price Value", "Ranking"],
+                datasets: [
+                  {
+                    label: brand,
+                    data: [
+                      (condition / maxCondition) * 100,
+                      (price / Math.max(...prices)) * 100,
+                      ((makes.length - idx) / makes.length) * 100
+                    ],
+                    backgroundColor: "rgba(220, 38, 38, 0.2)",
+                    borderColor: "#dc2626",
+                    pointBackgroundColor: "#dc2626"
+                  }
+                ]
+              },
+              options: {
+                plugins: {
+                  legend: { display: false },
+                  datalabels: { display: false }
+                },
+                scales: { r: { beginAtZero: true, max: 100 } }
+              }
+            },
+            `${brand} has an average condition score of ${condition.toFixed(1)}`
+          );
+        }
+      },
+      plugins: {
+        legend: { display: false },
+        datalabels: {
+          anchor: "end",
+          align: "end",
+          color: "#fff",
+          font: { weight: "bold", size: 10 },
+          formatter: (value) => value.toFixed(1)
+        },
+        tooltip: {
+          callbacks: {
+            label: (context) => `Avg Condition: ${context.parsed.x.toFixed(2)}`
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { color: "rgba(255, 255, 255, 0.05)" },
+          min: Math.floor(minCondition - 2),
+          max: Math.ceil(maxCondition + 1),
+          title: {
+            display: true,
+            text: "Average Condition Score",
+            color: "#94a3b8"
+          }
+        },
+        y: {
+          grid: { display: false }
+        }
+      },
+      animation: {
+        duration: 2000,
+        delay: (context) => context.dataIndex * 80
       }
     }
   });

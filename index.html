@@ -22,20 +22,65 @@
     <div class="scroll-progress-bar" id="progressBar"></div>
   </div>
 
-  <!-- Navigation Dots -->
+  <!-- Navigation Sidebar -->
   <nav class="story-nav" id="storyNav">
-    <div class="nav-dot active" data-section="0" title="Introduction"></div>
-    <div class="nav-dot" data-section="1" title="The Data"></div>
-    <div class="nav-dot" data-section="2" title="Age & Value"></div>
-    <div class="nav-dot" data-section="3" title="Body Types"></div>
-    <div class="nav-dot" data-section="4" title="Colors"></div>
-    <div class="nav-dot" data-section="5" title="Top Brands"></div>
-    <div class="nav-dot" data-section="6" title="Condition"></div>
-    <div class="nav-dot" data-section="7" title="Mileage"></div>
-    <div class="nav-dot" data-section="8" title="Geography"></div>
-    <div class="nav-dot" data-section="9" title="Transmission"></div>
-    <div class="nav-dot" data-section="10" title="Premium"></div>
-    <div class="nav-dot" data-section="11" title="Conclusion"></div>
+    <div class="nav-toggle" id="navToggle">
+      <i class="fas fa-bars"></i>
+    </div>
+    <div class="nav-items">
+      <a class="nav-item active" data-section="0">
+        <span class="nav-number">00</span>
+        <span class="nav-label">Introduction</span>
+      </a>
+      <a class="nav-item" data-section="1">
+        <span class="nav-number">01</span>
+        <span class="nav-label">The Data</span>
+      </a>
+      <a class="nav-item" data-section="2">
+        <span class="nav-number">02</span>
+        <span class="nav-label">Age & Value</span>
+      </a>
+      <a class="nav-item" data-section="3">
+        <span class="nav-number">03</span>
+        <span class="nav-label">Body Types</span>
+      </a>
+      <a class="nav-item" data-section="4">
+        <span class="nav-number">04</span>
+        <span class="nav-label">Colors</span>
+      </a>
+      <a class="nav-item" data-section="5">
+        <span class="nav-number">05</span>
+        <span class="nav-label">Top Brands</span>
+      </a>
+      <a class="nav-item" data-section="6">
+        <span class="nav-number">06</span>
+        <span class="nav-label">Condition</span>
+      </a>
+      <a class="nav-item" data-section="7">
+        <span class="nav-number">07</span>
+        <span class="nav-label">Mileage</span>
+      </a>
+      <a class="nav-item" data-section="8">
+        <span class="nav-number">08</span>
+        <span class="nav-label">Geography</span>
+      </a>
+      <a class="nav-item" data-section="9">
+        <span class="nav-number">09</span>
+        <span class="nav-label">Transmission</span>
+      </a>
+      <a class="nav-item" data-section="10">
+        <span class="nav-number">10</span>
+        <span class="nav-label">Brand Quality</span>
+      </a>
+      <a class="nav-item" data-section="11">
+        <span class="nav-number">11</span>
+        <span class="nav-label">Premium</span>
+      </a>
+      <a class="nav-item" data-section="12">
+        <span class="nav-number">12</span>
+        <span class="nav-label">Conclusion</span>
+      </a>
+    </div>
   </nav>
 
   <!-- Story Container -->
@@ -63,17 +108,17 @@
         </div>
       </div>
       <div class="floating-stats">
-        <div class="float-stat" style="--delay: 0s">
+        <div class="float-stat float-stat-1">
           <i class="fas fa-car"></i>
           <span class="counter" id="heroVehicles" data-target="532817">0</span>
           <label>Vehicles</label>
         </div>
-        <div class="float-stat" style="--delay: 0.2s">
+        <div class="float-stat float-stat-2">
           <i class="fas fa-industry"></i>
           <span class="counter" id="heroMakes" data-target="42">0</span>
           <label>Makes</label>
         </div>
-        <div class="float-stat" style="--delay: 0.4s">
+        <div class="float-stat float-stat-3">
           <i class="fas fa-map-marker-alt"></i>
           <span class="counter" id="heroStates" data-target="51">0</span>
           <label>States</label>
@@ -93,22 +138,22 @@
           </p>
         </div>
         <div class="data-cards slide-in-right">
-          <div class="data-card" style="--delay: 0.1s">
+          <div class="data-card data-card-1">
             <div class="card-icon"><i class="fas fa-database"></i></div>
             <div class="card-value" id="totalRecords">532,817</div>
             <div class="card-label">Total Records</div>
           </div>
-          <div class="data-card" style="--delay: 0.2s">
+          <div class="data-card data-card-2">
             <div class="card-icon"><i class="fas fa-columns"></i></div>
             <div class="card-value">16</div>
             <div class="card-label">Data Columns</div>
           </div>
-          <div class="data-card" style="--delay: 0.3s">
+          <div class="data-card data-card-3">
             <div class="card-icon"><i class="fas fa-car-side"></i></div>
             <div class="card-value" id="totalModels">1,377</div>
             <div class="card-label">Car Models</div>
           </div>
-          <div class="data-card" style="--delay: 0.4s">
+          <div class="data-card data-card-4">
             <div class="card-icon"><i class="fas fa-calendar"></i></div>
             <div class="card-value">1984-2015</div>
             <div class="card-label">Year Range</div>
@@ -234,17 +279,17 @@
                 vehicle sales.</p>
             </div>
             <div class="top-colors">
-              <div class="top-color" style="--color: #1a1a1a">
+              <div class="top-color top-color-black">
                 <span class="color-swatch"></span>
                 <span class="color-name">Black</span>
                 <span class="color-percent" id="blackPercent">19.5%</span>
               </div>
-              <div class="top-color" style="--color: #f0f0f0">
+              <div class="top-color top-color-white">
                 <span class="color-swatch"></span>
                 <span class="color-name">White</span>
                 <span class="color-percent" id="whitePercent">17.8%</span>
               </div>
-              <div class="top-color" style="--color: #c0c0c0">
+              <div class="top-color top-color-silver">
                 <span class="color-swatch"></span>
                 <span class="color-name">Silver</span>
                 <span class="color-percent" id="silverPercent">14.2%</span>
@@ -440,11 +485,42 @@
       </div>
     </section>
 
-    <!-- Section 10: Premium Models -->
-    <section class="story-section premium-section alt-bg" data-section="10">
+    <!-- Section 10: Brand Quality -->
+    <section class="story-section brand-quality-section" data-section="10">
+      <div class="split-layout">
+        <div class="story-text slide-in-left">
+          <span class="chapter-number">10</span>
+          <h2>Brand Quality Analysis</h2>
+          <p class="lead-text">
+            Average vehicle condition by manufacturer reveals quality patterns.
+          </p>
+          <div class="quality-ranking">
+            <div class="quality-leader">
+              <i class="fas fa-crown"></i>
+              <span class="leader-name" id="topQualityBrand">Infiniti</span>
+              <span class="leader-score" id="topQualityScore">35.2</span>
+              <span class="leader-label">Avg Condition</span>
+            </div>
+          </div>
+          <p class="insight-text">
+            <i class="fas fa-lightbulb"></i>
+            Luxury brands like <strong>Infiniti, Lexus,</strong> and <strong>BMW</strong> maintain higher average
+            condition scores.
+          </p>
+        </div>
+        <div class="chart-area slide-in-right">
+          <div class="chart-wrapper">
+            <canvas id="brandQualityChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 11: Premium Models -->
+    <section class="story-section premium-section alt-bg" data-section="11">
       <div class="full-width-content">
         <div class="text-center slide-in-up">
-          <span class="chapter-number">10</span>
+          <span class="chapter-number">11</span>
           <h2>Top 10 Most Expensive Models</h2>
           <p class="section-desc">Highest average selling prices in the dataset</p>
         </div>
@@ -456,40 +532,40 @@
       </div>
     </section>
 
-    <!-- Section 11: Conclusion -->
-    <section class="story-section conclusion-section" data-section="11">
+    <!-- Section 12: Conclusion -->
+    <section class="story-section conclusion-section" data-section="12">
       <div class="conclusion-content">
         <div class="reveal-text">
-          <span class="chapter-number">Conclusion</span>
+          <span class="chapter-number">12</span>
         </div>
         <h2 class="conclusion-title reveal-text delay-1">Key Takeaways</h2>
         <div class="takeaways-grid fade-in-up">
-          <div class="takeaway-card" style="--delay: 0.1s">
+          <div class="takeaway-card takeaway-card-1">
             <div class="takeaway-icon"><i class="fas fa-calendar-minus"></i></div>
             <h4>Age Matters</h4>
             <p>Vehicles depreciate ~<strong>$580/year</strong> on average</p>
           </div>
-          <div class="takeaway-card" style="--delay: 0.2s">
+          <div class="takeaway-card takeaway-card-2">
             <div class="takeaway-icon"><i class="fas fa-truck"></i></div>
             <h4>SUV Premium</h4>
             <p>SUVs command <strong>30% higher</strong> prices than sedans</p>
           </div>
-          <div class="takeaway-card" style="--delay: 0.3s">
+          <div class="takeaway-card takeaway-card-3">
             <div class="takeaway-icon"><i class="fas fa-star"></i></div>
             <h4>Condition is Key</h4>
             <p>Best condition = <strong>4.9x</strong> price of worst</p>
           </div>
-          <div class="takeaway-card" style="--delay: 0.4s">
+          <div class="takeaway-card takeaway-card-4">
             <div class="takeaway-icon"><i class="fas fa-tachometer-alt"></i></div>
             <h4>Mileage Impact</h4>
             <p>Each mile costs about <strong>$0.15</strong> in value</p>
           </div>
-          <div class="takeaway-card" style="--delay: 0.5s">
+          <div class="takeaway-card takeaway-card-5">
             <div class="takeaway-icon"><i class="fas fa-palette"></i></div>
             <h4>Color Trends</h4>
             <p>Neutral colors make up <strong>65%</strong> of sales</p>
           </div>
-          <div class="takeaway-card" style="--delay: 0.6s">
+          <div class="takeaway-card takeaway-card-6">
             <div class="takeaway-icon"><i class="fas fa-cog"></i></div>
             <h4>Auto Dominates</h4>
             <p>Automatic transmission: <strong>85%</strong> market share</p>
